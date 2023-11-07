@@ -5,20 +5,31 @@ from django.contrib.auth.models import (
     PermissionsMixin,
 )
 
+
 class CustomUserManager(BaseUserManager):
-    def create_user(self, email, password=None):
+    '''
+    A custom user model manager that uses the email as a unique identifier
+    for authentication instead of the username
+    '''
+      
+    def create_user(self, username,email, password=None):
+        
         if not email:
             raise ValueError("Users must have a valid student email address")
         user = self.model(
+            username = username,
             email=self.normalize_email(email),
+
         )
         user.set_password(password)
         user.save(using=self.db)
         return user
 
-    def create_superuser(self, email, password):
+    def create_superuser(self, username,email, password=None):
         user = self.create_user(
             email=self.normalize_email(email),
+            username = username,
+            password=password,
         )
         user.is_admin = True
         user.is_staff = True
@@ -26,7 +37,12 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self.db)
         return user
 
+
+
+
+
 class User(AbstractBaseUser, PermissionsMixin):
+    username = models.CharField(max_length=255, unique=True,db_index=True)
     email = models.EmailField(max_length=255, unique=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -34,12 +50,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     created_at = models.DateTimeField(auto_now_add=True)
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ["username"]
 
     objects = CustomUserManager()
 
     def __str__(self) -> str:
-        return self.email
+        return self.username
 
 
 class Profile(models.Model):
@@ -51,3 +67,6 @@ class Profile(models.Model):
     phone_number = models.CharField(max_length=100)
     profile_picture = models.CharField(max_length=255)
     bio = models.CharField(max_length=255)
+
+    def __str__(self) -> str:
+        return f"{self.firstname} {self.lastname}"
