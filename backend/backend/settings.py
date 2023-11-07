@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'api',
     'Account',
     'Post',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
