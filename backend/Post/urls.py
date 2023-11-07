@@ -7,5 +7,5 @@ router.register(r'post', PostViewset)
 
 
 urlpatterns = [
-    path(router.urls),
+    path('', include(router.urls)),
 ]
