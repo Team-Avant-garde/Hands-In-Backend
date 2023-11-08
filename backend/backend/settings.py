@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+from datetime import timedelta
 
 load_dotenv()
 
@@ -49,6 +50,7 @@ INSTALLED_APPS = [
     "Account",
     "Post",
     "rest_framework",
+    "rest_framework_simplejwt",
 ]
 
 MIDDLEWARE = [
@@ -111,6 +113,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ],
+}
+
+JWT_AUTH = {
+    "JWT_ALLOW_REFRESH": True,
+    "JWT_EXPIRATION_DELTA": timedelta(days=7),  # Adjust as needed
+    "JWT_REFRESH_EXPIRATION_DELTA": timedelta(days=14),  # Adjust as needed
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/

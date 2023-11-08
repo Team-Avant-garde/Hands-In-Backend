@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 import random
 from django.conf import settings
 from .utils import send_otp_email
-from django.contrib.auth import authenticate
+
 
 from .models import User
 
@@ -34,15 +34,4 @@ class UserLoginSerializer(serializers.Serializer):
     email = serializers.EmailField(write_only=True)
     password = serializers.CharField(max_length=100, write_only=True)
 
-    def validate(self,data):
-        validated_data = super().validate(data)
-
-        email = validated_data.get('email')
-        password = validated_data.get('password')
-
-        user = authenticate(email=email, password=password)
-
-        if user is None:
-            raise serializers.ValidationError("Invalid email or password")
-        
-        return user
+   
