@@ -5,11 +5,12 @@ from django.utils import timezone
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from datetime import datetime, timedelta
+from rest_framework.views import APIView
 
 import datetime
 import random
 
-from .serializers import UserSignUpSerializer
+from .serializers import UserSignUpSerializer,UserLoginSerializer
 from .models import User
 from .utils import generate_otp, send_otp_email
 
@@ -81,3 +82,16 @@ class UserSignupView(viewsets.ModelViewSet):
         instance.save()
         send_otp_email(instance.email, otp)
         return Response({"message": "OTP resent successfully"}, status=status.HTTP_200_OK)
+
+class UserLoginView(APIView):
+    serializer_class = UserLoginSerializer
+
+    def post(self,request):
+        serializer = self.serializer_class(data=request.data)
+        valid = serializer.is_valid(raise_exception=True)
+
+        if valid:
+            status_code = status.HTTP_200_OK
+        
+        return Response({"message":"Login Successful"},status=status_code)
+

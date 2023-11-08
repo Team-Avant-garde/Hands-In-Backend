@@ -7,7 +7,7 @@ router.register("user", views.UserSignupView, basename="user")
 
 
 urlpatterns = [ 
-    
+    path('login/', views.UserLoginView.as_view(), name='user_login'),
 ]
 
 urlpatterns += router.urls
