@@ -1,6 +1,11 @@
 asgiref
-Django
+dj-database-url
 djangorestframework
-pytz==2023.3.post1
+djangorestframework-jwt
+djangorestframework-simplejwt
+psycopg2
+PyJWT
+python-dotenv
+pytz
 sqlparse
-tzdata
+typing_extensions
