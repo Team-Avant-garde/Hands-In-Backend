@@ -6,13 +6,16 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from datetime import datetime, timedelta
 from rest_framework.views import APIView
+from rest_framework_jwt.settings import api_settings
+from django.contrib.auth import authenticate
 
 import datetime
 import random
 
-from .serializers import UserSignUpSerializer,UserLoginSerializer
+from .serializers import UserSignUpSerializer, UserLoginSerializer
 from .models import User
 from .utils import generate_otp, send_otp_email
+
 
 class UserSignupView(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -60,7 +63,7 @@ class UserSignupView(viewsets.ModelViewSet):
         if int(instance.max_otp_tries) == 0 and timezone.now() < instance.otp_max_out:
             return Response(
                 {"message": "OTP max out, please try after 10 minutes"},
-                status=status.HTTP_400_BAD_REQUEST, 
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
         otp = random.randint(1000, 9999)
@@ -78,20 +81,35 @@ class UserSignupView(viewsets.ModelViewSet):
         else:
             instance.otp_max_out = None
             instance.max_otp_tries = max_otp_try
-        
+
         instance.save()
         send_otp_email(instance.email, otp)
-        return Response({"message": "OTP resent successfully"}, status=status.HTTP_200_OK)
+        return Response(
+            {"message": "OTP resent successfully"}, status=status.HTTP_200_OK
+        )
+
 
 class UserLoginView(APIView):
-    serializer_class = UserLoginSerializer
+    def post(self, request):
+        serializer = UserLoginSerializer(data=request.data)
+        if serializer.is_valid:
+            user = authenticate(
+                email=serializer.validated_data["email"],
+                password=serializer.validated_data["password"],
+            )
 
-    def post(self,request):
-        serializer = self.serializer_class(data=request.data)
-        valid = serializer.is_valid(raise_exception=True)
+            if user:
+                jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+                jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+                payload = jwt_payload_handler(user)
+                token = jwt_encode_handler(payload)
+                return Response({"token": token}, status=status.HTTP_200_OK)
+            else:
+                return Response(
+                    {"error": "Invalid credentials"},
+                    status=status.HTTP_401_UNAUTHORIZED,
+                )
 
-        if valid:
-            status_code = status.HTTP_200_OK
-        
-        return Response({"message":"Login Successful"},status=status_code)
-
+        return Response(
+            {"message": "Login Successful"}, status=status.HTTP_400_BAD_REQUEST
+        )
