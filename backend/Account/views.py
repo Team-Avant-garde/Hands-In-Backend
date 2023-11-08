@@ -34,11 +34,11 @@ class UserSignupView(viewsets.ModelViewSet):
 
         if (
             not instance.is_active
-            and instance.opt == request.data.get("otp")
+            and instance.otp == request.data.get("otp")
             and instance.otp_expiry
             and timezone.now() < instance.otp_expiry
         ):
-            instance.is_Active = True
+            instance.is_active = True
             instance.otp_expiry = None
             instance.max_otp_tries = settings.MAX_OTP_TRY
             instance.otp_max_out = None
@@ -65,7 +65,7 @@ class UserSignupView(viewsets.ModelViewSet):
 
         otp = random.randint(1000, 9999)
         otp_expiry = timezone.now() + datetime.timedelta(minutes=10)
-        max_otp_try = int(instance.max_otp_try) - 1
+        max_otp_try = int(instance.max_otp_tries) - 1
 
         instance.otp = otp
         instance.otp_expiry = otp_expiry
@@ -77,7 +77,7 @@ class UserSignupView(viewsets.ModelViewSet):
             instance.max_otp_try = settings.MAX_OTP_TRY
         else:
             instance.otp_max_out = None
-            instance.max_otp_try = max_otp_try
+            instance.max_otp_tries = max_otp_try
         
         instance.save()
         send_otp_email(instance.email, otp)
