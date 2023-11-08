@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     "Account",
     "Post",
     "rest_framework",
+    "comment",
+    "vote",
 ]
 
 MIDDLEWARE = [

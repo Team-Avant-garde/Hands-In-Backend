@@ -5,6 +5,8 @@ from . import views
 
 urlpatterns = [
     path("", view=views.home, name="api-home"),
-    path("post/", include("Post.urls")),
+    path("posts/", include("Post.urls")),
     path("auth/", include("Account.urls")),
+    path("comments/", include("comment.urls")),
+    path("votes/", include("vote.urls"))
 ]
