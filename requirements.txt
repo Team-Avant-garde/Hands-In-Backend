@@ -9,3 +9,4 @@ python-dotenv
 pytz
 sqlparse
 typing_extensions
+gunicorn
