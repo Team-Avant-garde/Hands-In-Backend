@@ -1,5 +1,6 @@
 asgiref
 dj-database-url
+Django
 djangorestframework
 djangorestframework-jwt
 djangorestframework-simplejwt
@@ -10,3 +11,4 @@ pytz
 sqlparse
 typing_extensions
 gunicorn
+whitenoise
