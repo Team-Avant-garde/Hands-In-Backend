@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 import random
 from django.conf import settings
 from .utils import send_otp_email
-
+import re
 
 from .models import User
 
@@ -15,6 +15,33 @@ def is_student_email(email):
     return '.edu' in domain.lower()
 
 
+### Checks for strong Password
+def validate_password(password):
+    """
+    Check if the password is strong enough
+    """
+    if len(password) < 8:
+        return False
+
+    # Check for at least one uppercase letter
+    if not re.search(r'[A-Z]', password):
+        return False
+
+    # Check for at least one lowercase letter
+    if not re.search(r'[a-z]', password):
+        return False
+
+    # Check for at least one digit
+    if not re.search(r'\d', password):
+        return False
+
+    # Check for at least one special character
+    if not re.search(r'[!@#$%^&*()_+{}|:"<>?~\-=\[\]\\;\',./]', password):
+        return False
+
+    return True
+
+
 
 class UserSignUpSerializer(serializers.ModelSerializer):
     class Meta:
@@ -24,6 +51,7 @@ class UserSignUpSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         email = validated_data["email"]
+        password = validated_data["password"]
 
         if is_student_email(email):
             otp = random.randint(1000, 9999)
@@ -36,10 +64,13 @@ class UserSignUpSerializer(serializers.ModelSerializer):
                 otp_expiry=otp_expiry,
                 max_otp_tries=settings.MAX_OTP_TRY,
             )
-            user.set_password(validated_data["password"])
-            user.save()
-            send_otp_email(validated_data["email"], otp)
-            return user
+            if validate_password(password):
+                user.set_password(password)
+                user.save()
+                send_otp_email(validated_data["email"], otp)
+                return user
+            else:
+                raise serializers.ValidationError({"password": "Not a strong password"})
         else:
             # Handle non-student emails as per your requirements
             raise serializers.ValidationError({"email": "Not a valid student email."})
