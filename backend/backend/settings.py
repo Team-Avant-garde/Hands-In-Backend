@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     "vote",
     "cloudinary",
     "cloudinary_storage",
+    "Request",
 ]
 
 MIDDLEWARE = [
