@@ -13,7 +13,7 @@ from rest_framework.generics import CreateAPIView
 import datetime
 import random
 
-from .serializers import UserSignUpSerializer, UserLoginSerializer, UserOtp, ProfileSerializer
+from .serializers import UserSignUpSerializer, UserLoginSerializer, ProfileSerializer
 from .models import User, Profile
 from .utils import generate_otp, send_otp_email
 
@@ -35,7 +35,7 @@ class UserSignupView(CreateAPIView):
 
 class OtpView(viewsets.ModelViewSet):
     queryset = User.objects.all()
-    serializer_class = UserOtp
+    serializer_class = UserSignUpSerializer
 
     @action(detail=True, methods=["PATCH"])
     def verify_otp(self, request, pk=None):
@@ -58,7 +58,7 @@ class OtpView(viewsets.ModelViewSet):
             )
         else:
             return Response(
-                {"message": "User active or please enter a valid OTP"},
+                {"message": "User already active or invalid OTP"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
@@ -98,10 +98,11 @@ class OtpView(viewsets.ModelViewSet):
 class UserLoginView(APIView):
     def post(self, request):
         serializer = UserLoginSerializer(data=request.data)
-        if serializer.is_valid:
+
+        if serializer.is_valid():
             user = authenticate(
-                email=serializer.validated_data["email"],
-                password=serializer.validated_data["password"],
+                email = serializer.validated_data["email"],
+                password = serializer.validated_data["password"],
             )
 
             if user:
@@ -119,11 +120,10 @@ class UserLoginView(APIView):
         return Response(
             {"message": "Login Successful"}, status=status.HTTP_400_BAD_REQUEST
         )
-    
+
 
 class Profile(viewsets.ModelViewSet):
     """Handles creating and updating profile"""
-    
+
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
-
