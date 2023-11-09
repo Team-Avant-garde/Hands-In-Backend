@@ -1,5 +1,6 @@
 from django.db import models
 from Account.models import User
+from cloudinary.models import CloudinaryField
 
 # Create your models here.
 class Post(models.Model):
@@ -8,7 +9,7 @@ class Post(models.Model):
     content = models.CharField(max_length=4000)
     tag = models.CharField(max_length=50, db_index=True)
     is_solved = models.BooleanField(default=False)
-    post_image = models.CharField(max_length=255, blank=True, null=True)
+    post_image = CloudinaryField(blank=True)
     post_date = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
 
