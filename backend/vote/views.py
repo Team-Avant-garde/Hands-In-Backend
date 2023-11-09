@@ -10,7 +10,7 @@ from rest_framework.response import Response
 class VoteViewSet(viewsets.ModelViewSet):
     queryset = Vote.objects.all()
     serializer_class = VoteSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly, hasSelfVotedOrReadOnly]
+    # permission_classes = [permissions.IsAuthenticatedOrReadOnly, hasSelfVotedOrReadOnly]
 
     def perform_create(self, serializer):
         post_instance = get_object_or_404(Post, pk=self.request.data['post'])
