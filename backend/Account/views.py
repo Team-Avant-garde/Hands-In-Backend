@@ -8,28 +8,34 @@ from datetime import datetime, timedelta
 from rest_framework.views import APIView
 from rest_framework_jwt.settings import api_settings
 from django.contrib.auth import authenticate
+from rest_framework.generics import CreateAPIView
 
 import datetime
 import random
 
-from .serializers import UserSignUpSerializer, UserLoginSerializer
+from .serializers import UserSignUpSerializer, UserLoginSerializer, UserOtp
 from .models import User
 from .utils import generate_otp, send_otp_email
 
 
-class UserSignupView(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+class UserSignupView(CreateAPIView):
     serializer_class = UserSignUpSerializer
 
-    # def post(self, request):
-    #     user = request.data
-    #     serializer = self.serializer_class(data=user)
-    #     serializer.is_valid(raise_exception=True)
-    #     serializer.save()
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
 
-    #     user_data = serializer.data
+        if serializer.is_valid():
+            user = serializer.save()
+            return Response(
+                {"user_id": user.id, "username": user.username, "email": user.email},
+                status=status.HTTP_201_CREATED,
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    #     return Response(user_data, status=status.HTTP_201_CREATED)
+
+class OtpView(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserOtp
 
     @action(detail=True, methods=["PATCH"])
     def verify_otp(self, request, pk=None):

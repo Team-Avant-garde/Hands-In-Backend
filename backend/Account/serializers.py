@@ -44,8 +44,11 @@ class UserSignUpSerializer(serializers.ModelSerializer):
             # Handle non-student emails as per your requirements
             raise serializers.ValidationError({"email": "Not a valid student email."})
 
+
 class UserLoginSerializer(serializers.Serializer):
     email = serializers.EmailField(write_only=True)
     password = serializers.CharField(max_length=100, write_only=True)
 
+class UserOtp(serializers.Serializer):
+    userOtp = serializers.CharField(max_length=5)
    
