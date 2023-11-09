@@ -13,8 +13,8 @@ from rest_framework.generics import CreateAPIView
 import datetime
 import random
 
-from .serializers import UserSignUpSerializer, UserLoginSerializer, UserOtp
-from .models import User
+from .serializers import UserSignUpSerializer, UserLoginSerializer, UserOtp, ProfileSerializer
+from .models import User, Profile
 from .utils import generate_otp, send_otp_email
 
 
@@ -119,3 +119,11 @@ class UserLoginView(APIView):
         return Response(
             {"message": "Login Successful"}, status=status.HTTP_400_BAD_REQUEST
         )
+    
+
+class Profile(viewsets.ModelViewSet):
+    """Handles creating and updating profile"""
+    
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+

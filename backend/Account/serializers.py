@@ -4,6 +4,7 @@ import random
 from django.conf import settings
 from .utils import send_otp_email
 import re
+from . models import Profile
 
 from .models import User
 
@@ -83,3 +84,9 @@ class UserLoginSerializer(serializers.Serializer):
 class UserOtp(serializers.Serializer):
     userOtp = serializers.CharField(max_length=5)
    
+
+class ProfileSerializer(serializers.ModelSerializer):
+    """A serializer for our user profile objects. """
+    class Meta:
+        model = Profile
+        fields = ['user', 'firstname', 'lastname', 'programme', 'current_level', 'phone_number', 'profile_picture','bio']

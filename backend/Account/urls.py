@@ -6,6 +6,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 router = DefaultRouter()
 router.register("otp", views.OtpView, basename="otp")
+router.register("profile", views.Profile, basename="profile")
 
 
 urlpatterns = [
