@@ -36,7 +36,7 @@ DEBUG = True if os.environ.get("DEBUG") == "True" else False
 AUTH_USER_MODEL = "Account.User"
 
 ALLOWED_HOSTS = ["*"]
-
+CSRF_TRUSTED_ORIGINS = ["*"]
 
 # Application definition
 
