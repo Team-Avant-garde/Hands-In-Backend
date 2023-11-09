@@ -98,10 +98,11 @@ class OtpView(viewsets.ModelViewSet):
 class UserLoginView(APIView):
     def post(self, request):
         serializer = UserLoginSerializer(data=request.data)
-        if serializer.is_valid:
+
+        if serializer.is_valid():
             user = authenticate(
-                email=serializer.validated_data["email"],
-                password=serializer.validated_data["password"],
+                email = serializer.validated_data["email"],
+                password = serializer.validated_data["password"],
             )
 
             if user:
