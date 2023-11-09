@@ -17,30 +17,30 @@ def is_student_email(email):
 
 
 ### Checks for strong Password
-def validate_password(password):
-    """
-    Check if the password is strong enough
-    """
-    if len(password) < 8:
-        return False
+# def validate_password(password):
+#     """
+#     Check if the password is strong enough
+#     """
+#     if len(password) < 8:
+#         return False
 
-    # Check for at least one uppercase letter
-    if not re.search(r'[A-Z]', password):
-        return False
+#     # Check for at least one uppercase letter
+#     if not re.search(r'[A-Z]', password):
+#         return False
 
-    # Check for at least one lowercase letter
-    if not re.search(r'[a-z]', password):
-        return False
+#     # Check for at least one lowercase letter
+#     if not re.search(r'[a-z]', password):
+#         return False
 
-    # Check for at least one digit
-    if not re.search(r'\d', password):
-        return False
+#     # Check for at least one digit
+#     if not re.search(r'\d', password):
+#         return False
 
-    # Check for at least one special character
-    if not re.search(r'[!@#$%^&*()_+{}|:"<>?~\-=\[\]\\;\',./]', password):
-        return False
+#     # Check for at least one special character
+#     if not re.search(r'[!@#$%^&*()_+{}|:"<>?~\-=\[\]\\;\',./]', password):
+#         return False
 
-    return True
+#     return True
 
 
 
@@ -65,13 +65,13 @@ class UserSignUpSerializer(serializers.ModelSerializer):
                 otp_expiry=otp_expiry,
                 max_otp_tries=settings.MAX_OTP_TRY,
             )
-            if validate_password(password):
-                user.set_password(password)
-                user.save()
-                send_otp_email(validated_data["email"], otp)
-                return user
-            else:
-                raise serializers.ValidationError({"password": "Not a strong password"})
+            # if validate_password(password):
+            user.set_password(password)
+            user.save()
+            send_otp_email(validated_data["email"], otp)
+            return user
+            # else:
+            #     raise serializers.ValidationError({"password": "Not a strong password"})
         else:
             # Handle non-student emails as per your requirements
             raise serializers.ValidationError({"email": "Not a valid student email."})
@@ -80,9 +80,6 @@ class UserSignUpSerializer(serializers.ModelSerializer):
 class UserLoginSerializer(serializers.Serializer):
     email = serializers.EmailField(write_only=True)
     password = serializers.CharField(max_length=100, write_only=True)
-
-class UserOtp(serializers.Serializer):
-    userOtp = serializers.CharField(max_length=5)
    
 
 class ProfileSerializer(serializers.ModelSerializer):

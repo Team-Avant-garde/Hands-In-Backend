@@ -35,7 +35,7 @@ class UserSignupView(CreateAPIView):
 
 class OtpView(viewsets.ModelViewSet):
     queryset = User.objects.all()
-    serializer_class = UserOtp
+    serializer_class = UserSignUpSerializer
 
     @action(detail=True, methods=["PATCH"])
     def verify_otp(self, request, pk=None):
@@ -58,7 +58,7 @@ class OtpView(viewsets.ModelViewSet):
             )
         else:
             return Response(
-                {"message": "User active or please enter a valid OTP"},
+                {"message": "User already active or invalid OTP"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
