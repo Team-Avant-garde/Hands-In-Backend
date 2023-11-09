@@ -9,6 +9,7 @@ def home(request):
     <!DOCTYPE html>
 <html>
 <head>
+<title>Handsin | API Routes</title>
 <style>
 html {
 background-color: #C8C8C8;
