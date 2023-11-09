@@ -3,6 +3,7 @@ from . import views
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
+
 router = DefaultRouter()
 router.register("user", views.UserSignupView, basename="user")
 
