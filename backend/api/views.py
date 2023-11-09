@@ -52,15 +52,8 @@ tr:nth-child(even) {background-color: #f2f2f2;}
     </tr>
     <tr>
       <td>Sign Up</td>
-      <td><a href="http://handsin.onrender.com/api/auth/user/">Link</a></td>
+      <td><a href="http://handsin.onrender.com/api/auth/signup">Link</a></td>
       <td>POST</td>
-      <td>/api/auth/user/</td>
-      
-    </tr>
-    <tr>
-      <td>Sign List</td>
-      <td><a href="https://handsin.onrender.com/api/auth/user/">Link</a></td>
-      <td>GET</td>
       <td>/api/auth/user/</td>
       
     </tr>
