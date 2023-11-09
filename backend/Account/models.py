@@ -6,6 +6,7 @@ from django.contrib.auth.models import (
     PermissionsMixin,
 )
 from django.core.validators import RegexValidator, validate_email
+from cloudinary.models import CloudinaryField
 
 phone_regex = RegexValidator(
     regex=r"^\+?1?\d{9,15}$",
@@ -78,7 +79,7 @@ class Profile(models.Model):
     phone_number = models.CharField(
         unique=True, validators=[phone_regex], max_length=17, null=True, blank=True
     )
-    profile_picture = models.CharField(max_length=255)
+    profile_picture = CloudinaryField(blank=True)
     bio = models.CharField(max_length=255)
 
     def __str__(self) -> str:

@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "comment",
     "vote",
+    "cloudinary",
+    "cloudinary_storage",
 ]
 
 MIDDLEWARE = [
@@ -163,3 +165,21 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get("MAIL_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("MAIL_PASS")
+
+
+# CLOUDINARY_STORAGE = {
+#     "CLOUD_NAME": "dr2rkfkyo",
+#     "API_KEY": "597298612683787",
+#     "API_SECRET": "56J_pYYtMfgwtB0VA6PvKGxaKGQ"
+# }
+
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+          
+cloudinary.config( 
+  cloud_name = "dr2rkfkyo", 
+  api_key = "597298612683787", 
+  api_secret = "56J_pYYtMfgwtB0VA6PvKGxaKGQ" 
+)
