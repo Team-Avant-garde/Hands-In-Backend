@@ -106,11 +106,12 @@ class UserLoginView(APIView):
             )
 
             if user:
-                jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
-                jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
-                payload = jwt_payload_handler(user)
-                token = jwt_encode_handler(payload)
-                return Response({"token": token}, status=status.HTTP_200_OK)
+                # jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+                # jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+                # payload = jwt_payload_handler(user)
+                # token = jwt_encode_handler(payload)
+                # return Response({"token": token}, status=status.HTTP_200_OK)
+                return Response({"user_id": user.id}, status=status.HTTP_200_OK)
             else:
                 return Response(
                     {"error": "Invalid credentials"},
