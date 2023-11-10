@@ -85,7 +85,7 @@ tr:nth-child(even) {background-color: #f2f2f2;}
       <td>Post</td>
       <td><a href="https://handsin.onrender.com/api/posts/post/">Link</a></td>
       <td>GET/POST</td>
-      <td>/api/votes/vote/</td>
+      <td>/api/posts/post/</td>
     </tr>
   </table>
 </div>
