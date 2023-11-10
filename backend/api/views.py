@@ -72,19 +72,19 @@ tr:nth-child(even) {background-color: #f2f2f2;}
     <tr>
       <td>Comment</td>
       <td><a href="https://handsin.onrender.com/api/comments/comment/">Link</a></td>
-      <td>POST</td>
+      <td>GET/POST</td>
       <td>/api/comments/comment/</td>
     </tr>
     <tr>
       <td>Vote</td>
       <td><a href="https://handsin.onrender.com/api/votes/vote/">Link</a></td>
-      <td>POST</td>
+      <td>GET/POST</td>
       <td>/api/votes/vote/</td>
     </tr>
     <tr>
       <td>Post</td>
-      <td><a href="https://handsin.onrender.com/api/votes/vote/">Link</a></td>
-      <td>POST</td>
+      <td><a href="https://handsin.onrender.com/api/posts/post/">Link</a></td>
+      <td>GET/POST</td>
       <td>/api/votes/vote/</td>
     </tr>
   </table>
