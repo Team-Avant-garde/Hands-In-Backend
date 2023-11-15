@@ -15,35 +15,6 @@ def is_student_email(email):
     # Check if '.edu' is in the domain
     return '.edu' in domain.lower()
 
-
-### Checks for strong Password
-# def validate_password(password):
-#     """
-#     Check if the password is strong enough
-#     """
-#     if len(password) < 8:
-#         return False
-
-#     # Check for at least one uppercase letter
-#     if not re.search(r'[A-Z]', password):
-#         return False
-
-#     # Check for at least one lowercase letter
-#     if not re.search(r'[a-z]', password):
-#         return False
-
-#     # Check for at least one digit
-#     if not re.search(r'\d', password):
-#         return False
-
-#     # Check for at least one special character
-#     if not re.search(r'[!@#$%^&*()_+{}|:"<>?~\-=\[\]\\;\',./]', password):
-#         return False
-
-#     return True
-
-
-
 class UserSignUpSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -65,13 +36,12 @@ class UserSignUpSerializer(serializers.ModelSerializer):
                 otp_expiry=otp_expiry,
                 max_otp_tries=settings.MAX_OTP_TRY,
             )
-            # if validate_password(password):
+          
             user.set_password(password)
             user.save()
             send_otp_email(validated_data["email"], otp)
             return user
-            # else:
-            #     raise serializers.ValidationError({"password": "Not a strong password"})
+       
         else:
             # Handle non-student emails as per your requirements
             raise serializers.ValidationError({"email": "Not a valid student email."})
